@@ -1,0 +1,43 @@
+import { act, render, screen } from "@testing-library/react";
+import ForceGraphComponent from "../ForceGraph/ForceGraphComponent";
+import { D3Graph } from "../ForceGraph/d3GraphTypes";
+import { useState } from "react";
+
+test('ForceGraphComponent', () => {
+    it('should update the graph when nodes and links change', () => {
+        const graphTest1: D3Graph = {
+            nodes: [
+                {id: 'a', group: '1'},
+                {id: 'b', group: '1'}
+            ],
+            links: [],
+        };
+        const graphTest2: D3Graph = {
+            nodes: [
+                {id: 'c', group: '1'},
+                {id: 'd', group: '1'}
+            ],
+            links: [
+                {source: 'c', target: 'd', value: 4}
+            ],
+        };
+        const [graph, setGraph] = useState<D3Graph>(graphTest1);
+
+        render(
+            <ForceGraphComponent nodes={graph.nodes} links={graph.links}/>
+        );
+
+        // Get all the line elements within the SVG g element with the class of "links"
+        const initialLineElements = screen.getAllByTestId('g.links line');
+        expect(initialLineElements.length).toEqual(0);
+
+        // Simulate a change in nodes and links
+        act(() => {
+            setGraph(graphTest2);
+        });
+
+        // Check for new number of line elements
+        const newLineElements = screen.getAllByTestId('g.links line');
+        expect(newLineElements.length).toEqual(1);
+    });
+});
