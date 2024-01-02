@@ -1,13 +1,14 @@
-import React, { MutableRefObject, useEffect, useRef} from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { D3Graph, D3GraphProperties } from "./d3GraphTypes";
-import ForceGraphClass from "./ForceGraphClass";
+import ForceGraphClass from "./ForceGraph";
 
 function ForceGraphComponent({d3GraphData, nodePathOrder}: {d3GraphData: D3Graph, nodePathOrder: number[]}) {
     const ref: MutableRefObject<null> = useRef(null);
     const forceGraphRef: MutableRefObject<any> = useRef(null);
     const intervalRef: MutableRefObject<any> = useRef(null);
 
-    const isPlayingRef = useRef(false);
+    // const isPlayingRef = useRef(false);
+    const [isPlaying, setIsPlaying] = useState(false);
     const stepRef = useRef(0);
     // const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -22,12 +23,12 @@ function ForceGraphComponent({d3GraphData, nodePathOrder}: {d3GraphData: D3Graph
     }
     function pause() {
         clearInterval(intervalRef.current);
-        isPlayingRef.current = false;
+        setIsPlaying(false);
     }
     function stop() {
         pause();
         clearAllHighlights();
-        isPlayingRef.current = false;
+        setIsPlaying(false);
         stepRef.current = 0;
     }
     function stepForward() {
@@ -52,6 +53,7 @@ function ForceGraphComponent({d3GraphData, nodePathOrder}: {d3GraphData: D3Graph
     }
 
     function play() {
+        setIsPlaying(true);
         intervalRef.current = setInterval(() => {
             highlight(stepRef.current++);
             if (stepRef.current === nodePathOrder.length+1) {
@@ -76,15 +78,18 @@ function ForceGraphComponent({d3GraphData, nodePathOrder}: {d3GraphData: D3Graph
             <svg ref={ref}></svg>
             <button
                 onClick={play}
-                disabled={isPlayingRef.current}>
+                disabled={isPlaying}>
                 Play
             </button>
-            <button onClick={pause}>Pause</button>
-            <button onClick={stop}>Stop</button>
+            <button onClick={pause}
+                    disabled={!isPlaying}
+            >Pause</button>
+            <button onClick={stop}
+                    disabled={!isPlaying}
+            >Stop</button>
             <button onClick={stepBackward}>Step Backward</button>
             <button
                 onClick={stepForward}
-                disabled={isPlayingRef.current}
             >
                 Step Forward
             </button>

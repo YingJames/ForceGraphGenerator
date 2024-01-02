@@ -30,3 +30,5 @@ export interface D3GraphProperties {
     nodeOutlineOpacity?: number,
     nodeOutlineWidth?: number
 }
+
+export type GraphEdge<T> = { source: T, target: T, weight?: number };

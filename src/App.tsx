@@ -1,53 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import ForceGraphComponent from "./ForceGraph/ForceGraphComponent";
-import { D3Graph } from "./ForceGraph/d3GraphTypes";
+import { D3Graph, GraphEdge } from "./ForceGraph/d3GraphTypes";
 import CreateGraph from "./CreateGraph/CreateGraph";
 import CreateD3GraphFromGraph from "./CreateGraph/CreateD3GraphFromGraph";
-import EdgeInputComponent from "./GraphInputComponents/EdgeInputComponent";
-import NodeInputComponent from "./GraphInputComponents/NodeInputComponent";
+import GraphInputComponent from "./GraphInputComponents/GraphInputComponent";
 
-type EdgeValues<T> = { source: T, target: T, weight?: number };
-
-let graphTest: D3Graph = {
-    nodes: [
-        {id: 1, group: "1"},
-        {id: 2, group: "1"},
-        {id: 3, group: "1"},
-        {id: 4, group: "4"},
-        {id: 5, group: "5"},
-        // ...
-    ],
-    links: [
-        {source: 1, target: 2, value: 4},
-        {source: 1, target: 3, value: 4},
-        {source: 2, target: 4, value: 4},
-        {source: 2, target: 5, value: 4},
-
-        // ...
-    ],
-};
+const sampleEdge: GraphEdge<number>[] = [
+    {source: 1, target: 4},
+    {source: 4, target: 8},
+    {source: 1, target: 3},
+    {source: 4, target: 2},
+    {source: 3, target: 12},
+    {source: 3, target: 9},
+];
 
 function App() {
-    const [nodeInput, setNodeInput] = useState<string>('');
-    const [edgeInputs, setEdgeInputs] = useState<EdgeValues<any>[]>([]);
-    const [graphState, setGraphState] = useState<D3Graph>(graphTest);
+    const [edgeInputs, setEdgeInputs] = useState<GraphEdge<any>[]>(sampleEdge);
+    const [graphState, setGraphState] = useState<D3Graph>({nodes:[], links:[]});
     const [nodePathOrder, setNodePathOrder] = useState<number[]>([]);
     // const [graphState, setGraphState] = useState<D3Graph>({nodes: [], links: []});
 
+    useEffect(() => {
+        const filteredEdgeInputs: GraphEdge<string>[] = edgeInputs.filter((edge: GraphEdge<string>) => edge.source !== '' && edge.target !== '');
 
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault();
-        const nodeInputArray = nodeInput.replace(/\s/g, '').split(',');
-        // const nodeArray: number[] = nodeInputArray.map(item => Number(item))
-        const filteredEdgeInputs: EdgeValues<string>[] = edgeInputs.filter((edge: EdgeValues<string>) => edge.source !== '' && edge.target !== '');
-
-        const graph = CreateGraph(nodeInputArray, filteredEdgeInputs)
+        const graph = CreateGraph(filteredEdgeInputs);
         const d3Graph = CreateD3GraphFromGraph(graph);
         setGraphState(d3Graph);
         const pathOrder: number[] = graph.breadthFirstSearch();
         setNodePathOrder(pathOrder);
-    }
+    }, [edgeInputs]);
 
     return (
         <div>
@@ -55,13 +37,7 @@ function App() {
                 d3GraphData={graphState}
                 nodePathOrder={nodePathOrder}
             />
-
-            <form onSubmit={handleSubmit}>
-                <label>Nodes:</label>
-                <NodeInputComponent nodeInput={nodeInput} setNodeInput={setNodeInput} />
-                <EdgeInputComponent edgeInputs={edgeInputs} setEdgeInputs={setEdgeInputs} />
-                <button type={"submit"} className={"submit"}>Submit</button>
-            </form>
+            <GraphInputComponent setEdgeInputs={setEdgeInputs} />
 
 
         </div>

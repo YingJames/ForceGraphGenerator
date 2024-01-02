@@ -18,14 +18,14 @@ class ForceGraph {
     private color: ScaleOrdinal<string, string>;
     private selector: SVGElement;
     private d3Graph: D3Graph;
-    private width: number;
-    private height: number;
-    private customColorScheme;
+    private readonly width: number;
+    private readonly height: number;
+    private readonly customColorScheme;
     private linkColor;
     private linkOpacity;
-    private nodeForceStrength;
+    private readonly nodeForceStrength;
     private nodeRadius;
-    private nodeOutlineColor;
+    private readonly nodeOutlineColor;
     private nodeOutlineOpacity;
     private nodeOutlineWidth;
 
@@ -106,6 +106,30 @@ class ForceGraph {
 
     }
 
+    public highlightNode(nodeId: number) {
+        const node = d3.select(`[data-value="${nodeId}"]`);
+        node
+            .style("fill", "red")
+            .style("stroke", "#73002c");
+    }
+
+    public clearHighlight(nodeId: number) {
+        const node = d3.select(`[data-value="${nodeId}"]`);
+        node
+            .style("fill", this.color(String(nodeId)))
+            .style("stroke", this.nodeOutlineColor);
+
+    }
+
+    public clearAllHighlights(allNodeIds: number[]) {
+        allNodeIds.forEach((nodeId) => {
+            const node = d3.select(`[data-value="${nodeId}"]`);
+            node
+                .style("fill", this.color(String(nodeId)))
+                .style("stroke", this.nodeOutlineColor);
+        })
+    }
+
     private update({links, nodes, simulation}: updateProperties) {
         d3.select(this.selector).selectAll("*").remove();
         // Select the SVG container.
@@ -167,30 +191,6 @@ class ForceGraph {
 
         // Add a drag behavior.
         this.allNodes.call(dragNodes(simulation));
-    }
-
-    public highlightNode(nodeId: number) {
-        const node = d3.select(`[data-value="${nodeId}"]`);
-        node
-            .style("fill", "red")
-            .style("stroke", "#73002c");
-    }
-
-    public clearHighlight(nodeId: number) {
-        const node = d3.select(`[data-value="${nodeId}"]`);
-        node
-            .style("fill", this.color(String(nodeId)))
-            .style("stroke", this.nodeOutlineColor);
-
-    }
-
-    public clearAllHighlights(allNodeIds: number[]) {
-        allNodeIds.forEach((nodeId) => {
-            const node = d3.select(`[data-value="${nodeId}"]`);
-            node
-                .style("fill", this.color(String(nodeId)))
-                .style("stroke", this.nodeOutlineColor);
-        })
     }
 
 
