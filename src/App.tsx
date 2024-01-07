@@ -38,8 +38,11 @@ function App() {
                 nodePathOrder={nodePathOrder}
             />
             <GraphInputComponent setEdgeInputs={setEdgeInputs} />
-
-
+            <p>
+            Instructions: Each line in the Graph Data Input textbox represents an edge between two nodes.
+            You can step through the breadth-first traversal order of the graph. You also can click and drag nodes around for fun!
+            So, please try it out (This feature took me way longer than I thought it would).
+            </p>
         </div>
     );
 }
