@@ -34,11 +34,11 @@ class ForceGraph {
             width,
             height,
             customColorScheme = null,
-            linkColor = "#ffffff",
+            linkColor = "black",
             linkOpacity = 1,
             nodeForceStrength = -200,
             nodeRadius = 15,
-            nodeOutlineColor = "#e5e5e5",
+            nodeOutlineColor = "black",
             nodeOutlineOpacity = 1,
             nodeOutlineWidth = 3
         }: D3GraphProperties = graphProperties;
@@ -181,19 +181,17 @@ class ForceGraph {
             .enter()
             .append("text")
             .text((d: any) => d.id)
-            .attr("dx", -5)
-            .attr("dy", 30)
             .style("pointer-events", "none")
-            .style("fill", "#52ff3f")
+            .style("fill", "black")
             .style("font-size", "16px")
             .style("font-weight", "bold")
             .style("font-family", "sans-serif")
+            .style("text-anchor", "middle")
+            .style("dominant-baseline", "central")
 
         // Add a drag behavior.
         this.allNodes.call(dragNodes(simulation));
     }
-
-
 }
 
 export default ForceGraph;

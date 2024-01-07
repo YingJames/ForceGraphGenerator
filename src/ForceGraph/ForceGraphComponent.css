@@ -1,0 +1,8 @@
+#forceGraph--svg {
+    border: black solid 5px;
+    border-radius: 10%;
+}
+
+.control--button {
+    margin: 0 0.25rem;
+}

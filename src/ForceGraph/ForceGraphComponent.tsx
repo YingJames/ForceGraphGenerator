@@ -1,6 +1,7 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { D3Graph, D3GraphProperties } from "./d3GraphTypes";
 import ForceGraphClass from "./ForceGraph";
+import "./ForceGraphComponent.css"
 
 function ForceGraphComponent({d3GraphData, nodePathOrder}: {d3GraphData: D3Graph, nodePathOrder: number[]}) {
     const ref: MutableRefObject<null> = useRef(null);
@@ -65,7 +66,7 @@ function ForceGraphComponent({d3GraphData, nodePathOrder}: {d3GraphData: D3Graph
     }
 
     useEffect(() => {
-        const graphProperties: D3GraphProperties = {width:800, height:800};
+        const graphProperties: D3GraphProperties = {width:300, height:300};
         if (ref.current) {
 
             // ForceGraphUpdate(d3GraphData, ref.current, graphProperties);
@@ -74,26 +75,21 @@ function ForceGraphComponent({d3GraphData, nodePathOrder}: {d3GraphData: D3Graph
         }
     }, [d3GraphData]);
     return (
-        <>
-            <svg ref={ref}></svg>
-            <button
-                onClick={play}
-                disabled={isPlaying}>
-                Play
-            </button>
-            <button onClick={pause}
-                    disabled={!isPlaying}
-            >Pause</button>
-            <button onClick={stop}
-                    disabled={!isPlaying}
-            >Stop</button>
-            <button onClick={stepBackward}>Step Backward</button>
-            <button
-                onClick={stepForward}
-            >
-                Step Forward
-            </button>
-        </>
+        <section>
+            <svg id={'forceGraph--svg'} ref={ref}></svg>
+            <nav>
+                <label>Breadth-first Traversal:</label>
+                <button className={"control--button"} onClick={play} disabled={isPlaying}>
+                    Play
+                </button>
+                <button className={"control--button"} onClick={pause} disabled={!isPlaying}>
+                    Pause
+                </button>
+                <button className={"control--button"} onClick={stop} disabled={!isPlaying}>Stop</button>
+                <button className={"control--button"} onClick={stepBackward}>Step Backward</button>
+                <button className={"control--button"} onClick={stepForward}>Step Forward</button>
+            </nav>
+        </section>
     );
 }
 
