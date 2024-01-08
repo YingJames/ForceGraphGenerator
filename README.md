@@ -15,8 +15,7 @@ Secondly, there is a player controller to show the order of breadth-first traver
 * Step Forward: this will move one step forward in the traversal and pause if currently playing
 * Step Backward: this will move one step backward in the traversal and pause if currently playing
 
-You can click and drag the nodes on the canvas in order to move them with your mouse. Notice how each node and edges interact with each other when you move them 😎. It's quit cool, but doesn't serve any real function 😅. Hopefully you find this cool because this feature took a month to implement fully.
-
+You can click and drag the nodes on the canvas in order to move them with your mouse. Notice how each node and edges interact with each other when you move them 😎. 
 ## Implementation
 * React
 * Typescript
@@ -30,5 +29,8 @@ To install the Force Graph Generator, follow these steps:
 3. Install the necessary dependencies: `npm install`
 
 ## Motivation for creating the project
-I wanted a tool that could visualize graphs more easily. It looks cool.
+I wanted a tool that could visualize graphs more easily since I haven't seen any tool that can do that, especially one that implements breadth-first search. Also, the physics is quit cool, even if it doesn't serve any real function. Hopefully you find this interesting because these features took a month to implement fully 😅.
 
+## Potential New Features
+* Allow user customization for styling node sizes and color scheme
+* Add depth-first traversal
